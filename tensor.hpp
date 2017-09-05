@@ -221,6 +221,7 @@ struct Tensor : public TensorDesc {
         hipMemcpyHtoD(data, h.data(), data_size);
     }
 
+#define PGSIZE (2*1024*1024LL)
 
     Tensor(TensorDesc&& d)
         : TensorDesc(std::move(d)),
@@ -231,21 +232,24 @@ struct Tensor : public TensorDesc {
 
     Tensor(const Dim& dims)
         : TensorDesc(dims),
-          data_size(n*(size_t)c*h*w*sizeof(float)),
+          //data_size(n*(size_t)c*h*w*sizeof(float)),
+          data_size((((n*(size_t)c*h*w*sizeof(float)) + PGSIZE)/PGSIZE) * PGSIZE),
           owns_data(true) {
         alloc();
     }
 
     Tensor(int n, int c, int h, int w)
         : TensorDesc(n, c, h, w),
-          data_size(n*(size_t)c*h*w*sizeof(float)),
+          //data_size(n*(size_t)c*h*w*sizeof(float)),
+          data_size((((n*(size_t)c*h*w*sizeof(float)) + PGSIZE)/PGSIZE) * PGSIZE),
           owns_data(true) {
         alloc();
     }
 
     Tensor(int n, int c, int h, int w, bool do_alloc)
         : TensorDesc(n, c, h, w),
-          data_size(n*(size_t)c*h*w*sizeof(float)),
+          //data_size(n*(size_t)c*h*w*sizeof(float)),
+          data_size((((n*(size_t)c*h*w*sizeof(float)) + PGSIZE)/PGSIZE) * PGSIZE),
           owns_data(do_alloc) {
         if (do_alloc) {
             alloc();

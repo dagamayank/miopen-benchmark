@@ -9,8 +9,9 @@
 std::map<std::string, ConvLayerDesc> get_layers(){
     std::map<std::string, ConvLayerDesc> m;
     // batch_size, w, h, channels_in, channels_out, kernel_size, padding, stride
-    m.emplace("L2", ConvLayerDesc({128, 64, 64, 64, 128, 9, 0, 1}));
-    m.emplace("W1", ConvLayerDesc({128, 64, 64, 64, 128, 3, 1, 1}));
+//    m.emplace("L2", ConvLayerDesc({128, 64, 64, 64, 128, 9, 0, 1}));
+    m.emplace("W1", ConvLayerDesc({16, 175, 40, 128, 256, 5, 1, 2}));
+//    m.emplace("W1", ConvLayerDesc({128, 64, 64, 64, 128, 3, 1, 1}));
     return m;
 }
 
